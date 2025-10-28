@@ -41,16 +41,23 @@ transporter.verify((error) => {
 
 // Register endpoint
 app.post('/api/register', async (req, res) => {
+  console.log('📥 Received registration request');
+  console.log('Request body:', req.body);
+  
   try {
     const { name, email, phone, program } = req.body;
 
     // Validate required fields
     if (!name || !email || !phone || !program) {
+      console.log('❌ Validation failed - missing required fields');
       return res.status(400).json({ 
         success: false, 
         message: 'All fields are required' 
       });
     }
+    
+    console.log('✅ Validation passed');
+    console.log('Sending email to:', email);
 
     // Email content
     const mailOptions = {
@@ -154,9 +161,15 @@ app.post('/api/register', async (req, res) => {
     };
 
     // Send email
+    console.log('📤 Attempting to send email...');
+    console.log('From:', process.env.EMAIL_USER);
+    console.log('To:', email);
+    
     const info = await transporter.sendMail(mailOptions);
     
-    console.log('✅ Email sent successfully:', info.messageId);
+    console.log('✅ Email sent successfully!');
+    console.log('Message ID:', info.messageId);
+    console.log('Response:', info.response);
     
     res.status(200).json({ 
       success: true, 
@@ -166,6 +179,10 @@ app.post('/api/register', async (req, res) => {
     
   } catch (error) {
     console.error('❌ Error sending email:', error);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    
     res.status(500).json({ 
       success: false, 
       message: 'Failed to send email',
@@ -193,8 +210,16 @@ app.get('/', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
+  console.log('='.repeat(50));
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📧 Send requests to http://localhost:${PORT}/api/register`);
+  console.log('='.repeat(50));
+  console.log('📝 Configuration:');
+  console.log('   EMAIL_USER:', process.env.EMAIL_USER ? '✅ Set' : '❌ Not set');
+  console.log('   EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD ? '✅ Set' : '❌ Not set');
+  console.log('   SMTP_HOST:', process.env.SMTP_HOST || 'smtp.gmail.com');
+  console.log('   SMTP_PORT:', process.env.SMTP_PORT || '587');
+  console.log('='.repeat(50));
 });
 
 export default app;
