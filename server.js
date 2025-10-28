@@ -10,8 +10,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
+// Middleware - CORS configuration
+// For production, you might want to restrict this to specific domains
+app.use(cors({
+  origin: '*',  // Allows all origins - change this in production
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
 // Create reusable transporter object
