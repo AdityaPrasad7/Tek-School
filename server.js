@@ -148,7 +148,7 @@ app.post('/api/register', async (req, res) => {
             
             <div class="footer">
               <p><strong>Best regards,</strong><br>Tek School Team</p>
-              <p>📧 <a href="mailto:contact@tekschool.com" style="color: #667eea;">contact@tekschool.com</a></p>
+              <p>📧 <a href="mailto:itekschool@gmail.com" style="color: #667eea;">itekschool@gmail.com</a></p>
             </div>
           </body>
         </html>
