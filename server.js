@@ -174,6 +174,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running', timestamp: new Date().toISOString() });
 });
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Tek School Backend API', 
+    version: '1.0.0',
+    endpoints: {
+      register: 'POST /api/register',
+      health: 'GET /api/health'
+    }
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
